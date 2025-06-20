@@ -1,7 +1,7 @@
 import {notion} from "$lib/notion/notion"
 import { error } from "@sveltejs/kit";
 
-export const addReaction = async (emailAddress: string, reactionId: string, emailId: string) => {
+export const addReaction = async (hashedEmail: string, reactionId: string, emailCampaignId: string) => {
 
     const response = await notion.pages.create({
         parent: {
@@ -18,19 +18,31 @@ export const addReaction = async (emailAddress: string, reactionId: string, emai
                     }
                 ]
             },
-            "Email Address": {
-                email: emailAddress
+            hashed_email: {
+                rich_text: [
+                    {
+                        "type": "text",
+                        "text": {
+                            "content": hashedEmail
+                        }
+                    }
+                ]
             },
             reaction_id: {
                 select: {
                     name: reactionId
                 }
             },
-            Email: {
-                relation: [{
-                    id: emailId
-                }]
-            }
+            utm_campaign: {
+                rich_text: [
+                    {
+                        "type": "text",
+                        "text": {
+                            "content": emailCampaignId
+                        }
+                    }
+                ]
+            },
         }
     });
 
