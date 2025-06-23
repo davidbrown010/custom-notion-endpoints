@@ -1,5 +1,5 @@
 import { error, redirect } from '@sveltejs/kit';
-import type { RequestHandler } from './[email_id]/$types';
+import type { RequestHandler } from './$types';
 import { addReaction } from '$lib/notion/reactions';
 
 export const GET: RequestHandler = async (event) => {
