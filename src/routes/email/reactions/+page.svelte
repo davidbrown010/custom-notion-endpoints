@@ -22,11 +22,13 @@
         inset: 0;
         background-color: #f2f9f8;
         color: #064c4a;
-        display: grid;
-        place-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         font-family: Arial, Helvetica, sans-serif;
         letter-spacing: -3%;
-        padding: 0 15vw;
+        padding: 0 clamp(30px, 15vw, 200px);
 
         .wrapper {
             text-align: center;
@@ -34,6 +36,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            width:100%;
 
             img {
                 width: clamp(75px, 10vw, 100px);
@@ -47,7 +50,6 @@
             p {
                 font-size: clamp(18px, 2vw, 28px);
                 font-weight: 300;
-                width: max(400px, 40vw);
             }
         }
     }
