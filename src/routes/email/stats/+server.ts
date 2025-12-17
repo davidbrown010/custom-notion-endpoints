@@ -23,6 +23,8 @@ export const POST: RequestHandler = async ({request}) => {
 
     const formData = await request.json()
 
+    console.log(await formData)
+
     const properties = formData.properties;
 
     const notionEmailId = properties?.['ID']?.unique_id?.number
