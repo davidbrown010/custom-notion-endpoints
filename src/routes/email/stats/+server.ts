@@ -27,14 +27,14 @@ export const POST: RequestHandler = async ({request}) => {
 
     
     // Retrieve the unique_id number
-    const notionEmailIdNumber = properties?.['ID']?.unique_id?.number;
+    const notionPageId = properties?.['Page ID']?.formula?.string;
 
     // Retrieve the Kit Broadcast ID as a number
     const broadcastID = properties?.['Kit Broadcast Id']?.number;
 
-    if (!notionEmailIdNumber) {
+    if (!notionPageId) {
         // Handle error if ID is missing or invalid
-        return json({ error: "No Notion Id Found or Invalid" }, { status: 400 });
+        return json({ error: "No Page Id Found or Invalid" }, { status: 400 });
     }
 
     if (!broadcastID) {
@@ -46,7 +46,7 @@ export const POST: RequestHandler = async ({request}) => {
 
     const broadcastStats = await getBroadcastStats(broadcastID)
 
-    const postStatsResponse = await updateEmailBroadcastStats(notionEmailIdNumber, broadcastStats)
+    const postStatsResponse = await updateEmailBroadcastStats(notionPageId, broadcastStats)
     
     if (postStatsResponse != true) error (500, "Unable to update notion page")
 

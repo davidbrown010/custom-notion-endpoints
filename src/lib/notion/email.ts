@@ -1,23 +1,23 @@
 import { notion } from "./notion";
 
-export const updateEmailBroadcastStats = async (notionBroadcastId: number, broadcast: Broadcast) => {
+export const updateEmailBroadcastStats = async (pageId: string, broadcast: Broadcast) => {
 
-    const dbID = "2c800f1c8e5980faa248c32e760dd7dd"
+    // const dbID = "2c800f1c8e5980faa248c32e760dd7dd"
 
-    //get the page ID fron the DB
-    const pageResponse = await notion.databases.query({
-        database_id: dbID,
-        filter: {
-            "property": "ID",
-            "unique_id": {
-                "equals": notionBroadcastId
-            }
-        },
-    })
+    // //get the page ID fron the DB
+    // const pageResponse = await notion.databases.query({
+    //     database_id: dbID,
+    //     filter: {
+    //         "property": "ID",
+    //         "unique_id": {
+    //             "equals": notionBroadcastId
+    //         }
+    //     },
+    // })
 
-    if (pageResponse.results.length < 1) return "Page Not Found"
+    // if (pageResponse.results.length < 1) return "Page Not Found"
 
-    const pageId = pageResponse.results[0].id
+    // const pageId = pageResponse.results[0].id
 
     const openRateAsPercent = Math.round(100 * (broadcast.stats.open_rate / 100)) / 100
 
