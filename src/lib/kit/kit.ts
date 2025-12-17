@@ -29,8 +29,6 @@ export const getSubscriberId = async (email: string) => {
 
     const subscribers = await data?.subscribers
 
-    console.log(subscribers)
-
     if (!subscribers || subscribers.length < 1) return null
 
     const subscriberId = subscribers[0].id
@@ -38,3 +36,23 @@ export const getSubscriberId = async (email: string) => {
     return subscriberId as number
 }
 
+
+export const getSubscriberStats = async (subscriberId: number) => {
+
+    const options = {
+        method: 'GET',
+        headers: {'X-Kit-Api-Key': KIT_API_KEY}
+    };
+
+    const response = await fetch(`https://api.kit.com/v4/subscribers/${subscriberId}/stats`, options)
+
+    const data = await response.json()
+
+    const stats = await data?.subscriber?.stats
+
+    if (!stats) return null
+
+    return stats
+    
+
+}
