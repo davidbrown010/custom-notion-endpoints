@@ -1,4 +1,4 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error, json, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { getBroadcastStats } from '$lib/kit/kit';
 
@@ -21,30 +21,32 @@ export const POST: RequestHandler = async ({request}) => {
 
     // BODY __________________________________________
 
-    const formData = await request.json()
+    const payload = await request.json();
 
-    console.log(await formData)
-
-    const properties = formData.properties;
-
-    const notionEmailId = properties?.['ID']?.unique_id?.number
-
-    if (!notionEmailId) error(400, "No Notion Id Found")
-
-    // const notionEmailIdNumber = Number(notionEmailId)
-
-    // if (Number.isNaN(notionEmailIdNumber)) error(400, "Notion Id Invalid")
-
+    const properties = payload.properties;
     
-    const broadcastID = properties?.["Kit Broadcast Id"]?.number
+    // Retrieve the unique_id number
+    const notionEmailIdNumber = properties?.['ID']?.unique_id?.number;
 
-    if (!notionEmailId) error(400, "No Kit Broadcast Id Found")
+    // Retrieve the Kit Broadcast ID as a number
+    // Note: If you defined this as a 'Text' property in Notion, use the 'rich_text' path instead
+    const broadcastID = properties?.['Kit Broadcast Id']?.number;
+
+    if (!notionEmailIdNumber) {
+        // Handle error if ID is missing or invalid
+        return json({ error: "No Notion Id Found or Invalid" }, { status: 400 });
+    }
+
+    if (!broadcastID) {
+        // Handle error if Broadcast ID is missing or invalid
+        return json({ error: "No Kit Broadcast Id Found or Invalid" }, { status: 400 });
+    }
 
     // Functions __________________________________________
 
     const broadcastStats = await getBroadcastStats(broadcastID)
 
-    const postStatsResponse = await updateEmailBroadcastStats(notionEmailId, broadcastStats)
+    const postStatsResponse = await updateEmailBroadcastStats(notionEmailIdNumber, broadcastStats)
     
     if (postStatsResponse != true) error (500, "Unable to update notion page")
 
