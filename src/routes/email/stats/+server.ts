@@ -21,18 +21,20 @@ export const POST: RequestHandler = async ({request}) => {
 
     // BODY __________________________________________
 
-    const formData = await request.formData()
+    const formData = await request.json()
 
-    const notionEmailId = formData.get("ID")
+    const properties = formData.properties;
+
+    const notionEmailId = properties?.['ID']?.unique_id?.number
 
     if (!notionEmailId) error(400, "No Notion Id Found")
 
-    const notionEmailIdNumber = Number(notionEmailId)
+    // const notionEmailIdNumber = Number(notionEmailId)
 
-    if (Number.isNaN(notionEmailIdNumber)) error(400, "Notion Id Invalid")
+    // if (Number.isNaN(notionEmailIdNumber)) error(400, "Notion Id Invalid")
 
     
-    const broadcastID = formData.get("Kit Broadcast Id")
+    const broadcastID = properties?.["Kit Broadcast Id"]?.number
 
     if (!notionEmailId) error(400, "No Kit Broadcast Id Found")
 
@@ -40,7 +42,7 @@ export const POST: RequestHandler = async ({request}) => {
 
     const broadcastStats = await getBroadcastStats(broadcastID)
 
-    const postStatsResponse = await updateEmailBroadcastStats(notionEmailIdNumber, broadcastStats)
+    const postStatsResponse = await updateEmailBroadcastStats(notionEmailId, broadcastStats)
     
     if (postStatsResponse != true) error (500, "Unable to update notion page")
 
