@@ -23,13 +23,13 @@ export const POST: RequestHandler = async ({request}) => {
 
     const payload = await request.json();
 
-    const properties = payload.properties;
+    const properties = payload.data.properties;
+
     
     // Retrieve the unique_id number
     const notionEmailIdNumber = properties?.['ID']?.unique_id?.number;
 
     // Retrieve the Kit Broadcast ID as a number
-    // Note: If you defined this as a 'Text' property in Notion, use the 'rich_text' path instead
     const broadcastID = properties?.['Kit Broadcast Id']?.number;
 
     if (!notionEmailIdNumber) {

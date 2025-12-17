@@ -19,6 +19,8 @@ export const updateEmailBroadcastStats = async (notionBroadcastId: number, broad
 
     const pageId = pageResponse.results[0].id
 
+    const openRateAsPercent = Math.round(100 * (broadcast.stats.open_rate / 100)) / 100
+
 
     // Push the stats to the page
     
@@ -29,12 +31,12 @@ export const updateEmailBroadcastStats = async (notionBroadcastId: number, broad
                 number: broadcast.stats.emails_opened
             },
             'Open Rate': {
-                number: broadcast.stats.open_rate / 100
+                number: openRateAsPercent
             }
         },
     });
 
-    const dataIsUpdatedCorrectly = response.properties["Open Rate"].number == (broadcast.stats.open_rate / 100) && response.properties["Opens"].number == broadcast.stats.emails_opened
+    const dataIsUpdatedCorrectly = response.properties["Open Rate"].number == openRateAsPercent && response.properties["Opens"].number == broadcast.stats.emails_opened
     
     return dataIsUpdatedCorrectly
 }
