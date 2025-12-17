@@ -29,7 +29,9 @@ export const getSubscriberId = async (email: string) => {
 
     const subscribers = await data?.subscribers
 
-    if (!subscribers || subscribers.length() < 1) return null
+    console.log(subscribers)
+
+    if (!subscribers || subscribers.length < 1) return null
 
     const subscriberId = subscribers[0].id
 

@@ -31,7 +31,7 @@ export const POST: RequestHandler = async ({request}) => {
     const notionPageId = properties?.['Page ID']?.formula?.string;
 
     // Get email address
-    const emailAddress = properties?.['Email']?.title?.plain_text;
+    const emailAddress = properties?.['Email']?.title[0]?.plain_text;
 
     if (!notionPageId) {
         // Handle error if ID is missing or invalid
