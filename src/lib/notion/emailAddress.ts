@@ -99,7 +99,7 @@ export const updateEmailAddressPerformance = async (pageId: string, subscriberSt
                     "end": null,
                     "time_zone": null
                 }
-            }
+            },
             ...nonNullDateProperties
         },
     });
