@@ -93,6 +93,13 @@ export const updateEmailAddressPerformance = async (pageId: string, subscriberSt
             'Sends Since Last Click': {
                 number: subscriberStats.sends_since_last_open
             },
+            'Stats Sync Date': {
+                date: {
+                    "start": (new Date()).toISOString(),
+                    "end": null,
+                    "time_zone": null
+                }
+            }
             ...nonNullDateProperties
         },
     });
