@@ -36,6 +36,10 @@ export const POST: RequestHandler = async ({request}) => {
     //Get subscriber ID
     const subscriberId = properties?.['Kit ID']?.number || (await getKitId_AndUpdateNotion(notionPageId, emailAddress));
 
+    if (!subscriberId) {
+        // Handle error if ID is missing or invalid
+        return json({ error: "Unable to update Kit Subscriber ID" }, { status: 500 });
+    }
 
     if (!notionPageId) {
         // Handle error if ID is missing or invalid

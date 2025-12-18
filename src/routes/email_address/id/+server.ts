@@ -45,9 +45,14 @@ export const POST: RequestHandler = async ({request}) => {
 
     // Functions __________________________________________
 
-    const postIdResponse = await getKitId_AndUpdateNotion(notionPageId, emailAddress)
+    const kitIdResponse = await getKitId_AndUpdateNotion(notionPageId, emailAddress)
 
-    return postIdResponse
+    if (!kitIdResponse) {
+        // Handle error if ID is missing or invalid
+        return json({ error: "Unable to update Kit Subscriber Id" }, { status: 500 });
+    }
+
+    return new Response("Updated Successfully")
 
 };
 

@@ -26,7 +26,7 @@ export const getKitId_AndUpdateNotion = async (pageId: string, emailAddress: str
     
     const syncedSubscriberId = await updateEmailAddressKitId(pageId, subscriberId)
     
-    if (!syncedSubscriberId) error (500, "Unable to update notion page")
+    if (!syncedSubscriberId) return false
 
     return syncedSubscriberId
 
