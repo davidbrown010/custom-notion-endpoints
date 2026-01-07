@@ -117,6 +117,13 @@ export const updateEmailAddressKitTags = async (pageId: string, subscriberKitTag
         properties: {
             "Kit Tags (from API)": {
                 "rich_text": [{ "text": { "content":  subscriberKitTags.map(current=>current.name).join(",")} }]
+            },
+            'Kit Tags Sync Date': {
+                date: {
+                    "start": (new Date()).toISOString(),
+                    "end": null,
+                    "time_zone": null
+                }
             }
         }
     });
