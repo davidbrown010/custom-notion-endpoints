@@ -1,10 +1,9 @@
 import { error, json, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getSubscriberId } from '$lib/kit/kit';
+import { getSubscriberId, getSubscriberKitTags, getSubscriberStats } from '$lib/kit/kit';
 
 import {ADMIN_AUTH} from '$env/static/private'
-import { updateEmailBroadcastStats } from '$lib/notion/email';
-import { getKitId_AndUpdateNotion } from '$lib/notion/emailAddress';
+import { getKitId_AndUpdateNotion, updateEmailAddressKitTags, updateEmailAddressPerformance } from '$lib/notion/emailAddress';
 
 
 export const POST: RequestHandler = async ({request}) => {
@@ -16,8 +15,8 @@ export const POST: RequestHandler = async ({request}) => {
 
     if (ADMIN_AUTH != auth) {
         error(404, {
-			message: 'Authorization Invalid'
-		});
+            message: 'Authorization Invalid'
+        });
     }
 
     // BODY __________________________________________
@@ -33,6 +32,14 @@ export const POST: RequestHandler = async ({request}) => {
     // Get email address
     const emailAddress = properties?.['Email']?.title[0]?.plain_text;
 
+    //Get subscriber ID
+    const subscriberId = properties?.['Kit ID']?.number || (await getKitId_AndUpdateNotion(notionPageId, emailAddress));
+
+    if (!subscriberId) {
+        // Handle error if ID is missing or invalid
+        return json({ error: "Unable to update Kit Subscriber ID" }, { status: 500 });
+    }
+
     if (!notionPageId) {
         // Handle error if ID is missing or invalid
         return json({ error: "No Page Id Found or Invalid" }, { status: 400 });
@@ -44,13 +51,21 @@ export const POST: RequestHandler = async ({request}) => {
     }
 
     // Functions __________________________________________
+        
 
-    const kitIdResponse = await getKitId_AndUpdateNotion(notionPageId, emailAddress)
+    if (!(await subscriberId))
+        error(500, "Unable to sync Kit ID")
 
-    if (!kitIdResponse) {
-        // Handle error if ID is missing or invalid
-        return json({ error: "Unable to update Kit Subscriber Id" }, { status: 500 });
-    }
+
+    // Now that we have the subscriber ID
+    const subscriberKitTagsResponse = await getSubscriberKitTags(await subscriberId)
+
+    if (!subscriberKitTagsResponse) error(500, "Unable to get subscriber Kit tags")
+
+
+    const postIdResponse = await updateEmailAddressKitTags(notionPageId, subscriberKitTagsResponse)
+    
+    if (postIdResponse != true) error (500, "Unable to update notion page")
 
     return new Response("Updated Successfully")
 

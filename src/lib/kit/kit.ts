@@ -56,3 +56,23 @@ export const getSubscriberStats = async (subscriberId: number) => {
     
 
 }
+
+export const getSubscriberKitTags = async (subscriberId: number) => {
+
+    const options = {
+        method: 'GET',
+        headers: {'X-Kit-Api-Key': KIT_API_KEY}
+    };
+
+    const response = await fetch(`https://api.kit.com/v4/subscribers/${subscriberId}/tags?include_total_count=false`, options)
+
+    const data = await response.json()
+
+    const tags = await data?.tags
+
+    if (!tags) return null
+
+    return tags
+    
+
+}

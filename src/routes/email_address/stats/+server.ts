@@ -3,8 +3,7 @@ import type { RequestHandler } from './$types';
 import { getSubscriberId, getSubscriberStats } from '$lib/kit/kit';
 
 import {ADMIN_AUTH} from '$env/static/private'
-import { updateEmailBroadcastStats } from '$lib/notion/email';
-import { getKitId_AndUpdateNotion, updateEmailAddressKitId, updateEmailAddressPerformance } from '$lib/notion/emailAddress';
+import { getKitId_AndUpdateNotion, updateEmailAddressPerformance } from '$lib/notion/emailAddress';
 
 
 export const POST: RequestHandler = async ({request}) => {

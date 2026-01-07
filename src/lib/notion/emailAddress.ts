@@ -106,9 +106,27 @@ export const updateEmailAddressPerformance = async (pageId: string, subscriberSt
 
     if (!response.properties) return false
     
-    return true
+    else return true
 
 }
+
+export const updateEmailAddressKitTags = async (pageId: string, subscriberKitTags: SubscriberTag[]) => {
+
+    const response = await notion.pages.update({
+        page_id: pageId,
+        properties: {
+            "Kit Tags (from API)": {
+                "rich_text": [{ "text": { "content":  subscriberKitTags.map(current=>current.name).join(",")} }]
+            }
+        }
+    });
+
+    if (!response.properties) return false
+    
+    else return true
+
+}
+
 
 type SubscriberStats = {
     sent: number | null,
@@ -122,6 +140,12 @@ type SubscriberStats = {
     last_clicked: Date | null,
     sends_since_last_open: number | null,
     sends_since_last_click: number | null
+}
+
+type SubscriberTag = {
+    "id": number,
+    "name": string,
+    "tagged_at": string
 }
 
 
