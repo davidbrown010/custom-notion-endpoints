@@ -50,7 +50,7 @@ export const pushDonationsForMonth = async (donationMonthPageId: string, donatio
                         { "id": donationMonthPageId }
                     ]
                 },
-                "Missing": {
+                "Status": {
                     "select": {
                         name: "Found"
                     }
